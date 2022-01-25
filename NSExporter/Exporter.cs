@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace NSExporter;
 
 public class Exporter
@@ -35,6 +37,7 @@ public class Exporter
     {
         var exporter = new Exporter() { DateOfBirth = dateOfBirth, Identifier = Identifier };
         client.BaseAddress = new Uri(nightscoutUrl);
+        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("NSExporter", "1.0"));
         var nightscoutApi = new NightscoutApi(client);
         exporter.Version = NightscoutVersion.FromJson(nightscoutApi.GetServerInformation().Result).VersionString;
         exporter.AddEntries(GlucoseEntry.FromJson(nightscoutApi.GetGlucose(from, to, 600).Result));

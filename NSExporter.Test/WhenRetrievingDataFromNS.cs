@@ -29,6 +29,22 @@ namespace NSExporter.Test
         }
 
         [Test]
+        public void TheVersionInformationShouldBeDefaultedWhenAServerIsNotReturningAVersion()
+        {
+            var messageHandler = new Codenizer.HttpClient.Testable.TestableMessageHandler();
+            var httpClient = new HttpClient(messageHandler) { BaseAddress = new Uri("http://localhost:5000") };
+            
+            messageHandler.RespondTo(HttpMethod.Get, "/api/v1/status.json")
+                .With(HttpStatusCode.InternalServerError);
+
+            NightscoutVersion.FromJson(
+                    new NightscoutApi(httpClient)
+                        .GetServerInformation().Result)
+                .VersionString
+                .Should().Be("Unavailable");
+        }
+
+        [Test]
         public void TheGlucoseDataShouldBeRetrieved()
         {
             var messageHandler = new Codenizer.HttpClient.Testable.TestableMessageHandler();

@@ -12,6 +12,9 @@ public class NightscoutApi
     public async Task<string> GetServerInformation()
     {
         var response = await _httpClient.GetAsync("/api/v1/status.json");
+        
+        if (!response.IsSuccessStatusCode)
+            return "{\"status\":\"nok\",\"version\":\"Unavailable\"}";
 
         return await response.Content.ReadAsStringAsync();
     }

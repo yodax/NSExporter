@@ -5,6 +5,8 @@ if (args.Length != 6)
     Console.WriteLine("USAGE:");
     Console.WriteLine("");
     Console.WriteLine("NSExporter.exe <url> <patientIdentifier> <dob: yyyy-MM-dd> <from: yyyy-MM-dd> <to: yyyy-MM-dd> <filename>");
+
+    Environment.ExitCode = 1;
     return;
 }
 
